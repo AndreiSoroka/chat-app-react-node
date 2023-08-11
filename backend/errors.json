@@ -1,0 +1,14 @@
+{
+  "default": {
+    "DEFAULT_ERROR": {
+      "errorCode": 0,
+      "errorMessage": "Something wrong",
+      "status": 500
+    },
+    "NOT_FOUND": {
+      "errorCode": 1,
+      "errorMessage": "Not found",
+      "status": 404
+    }
+  }
+}
