@@ -4,6 +4,7 @@ import http from 'http';
 import semver from 'semver';
 import App from '../app.mjs';
 import packageJson from '../package.json' assert {type: 'json'};
+import { initWebSocket } from './wss.mjs';
 
 if (!semver.satisfies(process.version, packageJson.engines.node)) {
   console.error(
@@ -70,6 +71,7 @@ function onError(error) {
    * Create HTTP server.
    */
   const server = http.createServer(app);
+  initWebSocket(server);
 
   /**
    * Listen on provided port, on all network interfaces.
