@@ -47,3 +47,11 @@ For simplicity, I decided to omit certain entities, such as Middlewares, Service
 existing ones
 
 I decided to skip the tests for now, as I'm not sure if I'll have enough time to write them.
+
+## 5. Add frontend MVP
+
+I've added a frontend MVP, which is a simple form with a single input and a button.
+
+![img_3.png](img_3.png)
+
+The weirdest thing is that it worked on the first try. Spent 20 minutes, haha.
