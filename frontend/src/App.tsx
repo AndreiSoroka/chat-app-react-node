@@ -1,76 +1,34 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useState} from "react";
+import {observer} from "mobx-react-lite";
+import messageStore from "./entities/Message/model/messageStore.ts";
 
-
-type Message = {
-  displayName: string;
-  textContent: string;
-  timestamp: number;
-}
-
-type ResponseMessageList = {
-  success: boolean;
-  count: number;
-  data: Message[]
-}
-
-function App() {
-  const [messages, setMessages] = useState<{
-    displayName: string;
-    textContent: string;
-    timestamp: number
-  }[]>([]);
-  const [displayName, setDisplayName] = useState('');
-  const [textContent, setTextContent] = useState('');
-  const ws = useRef<WebSocket | null>(null);
+const App: React.FC = observer(() => {
+  const [displayName, setDisplayName] = useState("");
+  const [textContent, setTextContent] = useState("");
 
   useEffect(() => {
-    fetch('/api/message/list')
-      .then<ResponseMessageList>(response => response.json())
-      .then(data => {
-        setMessages(data.data)
+    messageStore.fetchMessages()
+      .then(() => {
+        messageStore.initWebSocket();
       });
-
-    ws.current = new WebSocket(`ws://${window.location.host}/api/socket`);
-    ws.current.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setMessages(prev => [...prev, message]);
-    };
-
     return () => {
-      if (ws.current) ws.current.close();
+      // todo Code above is "promise", so it is possible to execute before it is created. It is a potential bug.
+      messageStore.ws?.close();
     };
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    fetch('/api/message', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        displayName,
-        textContent
-      })
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          console.error(data.error);
-        } else {
-          setTextContent('');
-        }
-      })
-      .catch(error => {
-        console.error('Failed to send message:', error);
-      });
+    const response = await messageStore.sendMessage(displayName, textContent);
+    if (response?.success) {
+      setTextContent("");
+    }
   };
 
   return (
     <div>
       <div>
-        {messages.map((message, index) => (
+        {messageStore.messages.map((message, index) => (
           <div key={index}>
             <strong>{message.displayName}</strong>: {message.textContent}
             <small>{new Date(message.timestamp).toLocaleString()}</small>
@@ -78,20 +36,27 @@ function App() {
         ))}
       </div>
       <form onSubmit={handleSubmit}>
+        {messageStore.fetchError && (
+          <div style={{color: 'red'}}>
+            Error {messageStore.fetchError.errorCode}: {messageStore.fetchError.errorMessage}
+          </div>
+        )}
         <input
           value={displayName}
-          onChange={e => setDisplayName(e.target.value)}
+          onChange={(e) => setDisplayName(e.target.value)}
           placeholder="Display Name"
+          readOnly={messageStore.status === "pending"}
         />
         <input
           value={textContent}
-          onChange={e => setTextContent(e.target.value)}
+          onChange={(e) => setTextContent(e.target.value)}
           placeholder="Message"
+          readOnly={messageStore.status === "pending"}
         />
-        <button type="submit">Send</button>
+        <button type="submit" disabled={messageStore.status === "pending"}>Send</button>
       </form>
     </div>
   );
-}
+});
 
 export default App;

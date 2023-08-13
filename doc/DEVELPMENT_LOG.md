@@ -48,10 +48,28 @@ existing ones
 
 I decided to skip the tests for now, as I'm not sure if I'll have enough time to write them.
 
-## 5. Add frontend MVP
+## 5. Add frontend MVP (23a0e478)
 
 I've added a frontend MVP, which is a simple form with a single input and a button.
 
 ![img_3.png](img_3.png)
 
 The weirdest thing is that it worked on the first try. Spent 20 minutes, haha.
+
+## 6. Add MobX Store
+
+Last time I tried Redux (https://github.com/AndreiSoroka/cart-component/tree/master),
+and I can say that I didn't like
+Redux. That's why I decided to try MobX, and it turned out to
+be very, very interesting.
+
+I created a store where the logic for working with messages is encapsulated:
+- Storing messages
+- Sending messages
+- Retrieving messages
+- Handling errors
+
+For now, I've simply drafted the code without giving it much thought. I'll likely refactor it later, depending on the
+time.
+
+![img_4.png](img_4.png)
