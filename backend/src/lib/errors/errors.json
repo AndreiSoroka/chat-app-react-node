@@ -1,0 +1,31 @@
+{
+  "default": {
+    "DEFAULT_ERROR": {
+      "errorCode": 0,
+      "errorMessage": "Something wrong",
+      "status": 500
+    },
+    "NOT_FOUND": {
+      "errorCode": 1,
+      "errorMessage": "Not found",
+      "status": 404
+    }
+  },
+  "messages": {
+    "TO_MANY_REQUESTS": {
+      "errorCode": 100,
+      "errorMessage": "Too many requests",
+      "status": 429
+    },
+    "EMPTY_DATA": {
+      "errorCode": 101,
+      "errorMessage": "Empty data",
+      "status": 400
+    },
+    "INVALID_DATA": {
+      "errorCode": 102,
+      "errorMessage": "Invalid data",
+      "status": 400
+    }
+  }
+}

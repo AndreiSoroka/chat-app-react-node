@@ -21,7 +21,7 @@ About `npx express-generator`: I noticed it was a bit outdated, primarily utiliz
 modernize the codebase,
 I updated it to leverage ES6 syntax and removed unnecessary (for me) libs and files.
 
-## 3. Add backend MVP
+## 3. Add backend MVP (05141b91)
 
 I quickly made a draft working code for the backend in few files.
 
@@ -33,3 +33,17 @@ I quickly made a draft working code for the backend in few files.
 
 Funny, it's a Nodejs task, but the frontend work is twice as much 😅
 I made a plan for myself, and it looks exactly like this.
+
+## 4. Migrate to MVC
+
+Because project is small, I've chosen to implement the MVC architecture pattern.
+
+Additionally, I added
+
+- ./core - code for start application
+- ./libs - collection of utilities, organized into directories in a DDD-like fashion
+
+For simplicity, I decided to omit certain entities, such as Middlewares, Services, and etc., distributing them among the
+existing ones
+
+I decided to skip the tests for now, as I'm not sure if I'll have enough time to write them.

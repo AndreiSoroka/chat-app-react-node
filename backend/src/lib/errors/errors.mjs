@@ -1,4 +1,8 @@
+// migrate to MVC
 import errors from './errors.json' assert {type: 'json'};
+import getEnvironments from '../env/getEnvironments.mjs';
+
+const { NODE_ENV } = getEnvironments();
 
 export function NotFoundHandler(req, res, next) {
   next(errors.default.NOT_FOUND);
@@ -12,7 +16,7 @@ export function AllErrorsHandler(err, req, res, next) {
     ? err
     : errors.default.DEFAULT_ERROR;
 
-  if (process.env.NODE_ENV !== 'test') {
+  if (NODE_ENV !== 'test') {
     console.error(req.originalUrl, error);
     if (typeof error !== 'object') {
       console.error(new Error().stack);
