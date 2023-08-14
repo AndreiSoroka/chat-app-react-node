@@ -34,7 +34,7 @@ I quickly made a draft working code for the backend in few files.
 Funny, it's a Nodejs task, but the frontend work is twice as much 😅
 I made a plan for myself, and it looks exactly like this.
 
-## 4. Migrate to MVC
+## 4. Migrate to MVC (f04f110b)
 
 Because project is small, I've chosen to implement the MVC architecture pattern.
 
@@ -75,7 +75,7 @@ time.
 
 ![img_4.png](img_4.png)
 
-## Add Ant Design
+## Add Ant Design (7ec3d661)
 
 Hi there!
 Today, I integrated Ant Design into the project. I've previously used it with Vue.js (and it wasn't a great fit for
@@ -86,3 +86,26 @@ Of course, I spent some time on AntD + MobX and encountered a few pitfalls.
 
 ![img_6.png](img_6.png)
 ![img_5.png](img_5.png)
+
+## Migrate to FSD
+
+I've decided to use the [FSD](https://feature-sliced.design/) methodology.
+
+The first time I tried it was
+here: https://github.com/AndreiSoroka/cart-component/tree/master.
+However, I only truly appreciated this structure later on.
+
+![chat_example.gif](chat_example.gif)
+
+The project is working. Now I need to decide what I want to showcase in the test assignment.
+
+- Code quality?
+- Architecture?
+- Structure?
+- Features?
+- Design?
+
+I still have 4 days left (out of 7), but this time I don't have much free time to even dedicate a full working day to
+it.
+
+I will make a decision tomorrow

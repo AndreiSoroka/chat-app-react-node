@@ -10,20 +10,7 @@ import {
   useRef
 } from "react";
 import {toJS} from "mobx";
-
-// todo separate file
-export interface MessageListRef {
-  scrollToEnd: () => void;
-}
-
-type MessageListProps = {
-  messages: {
-    displayName: string;
-    textContent: string;
-    timestamp: number;
-  }[];
-  onAutoScroll?: (value: boolean) => void;
-}
+import type {MessageListProps, MessageListRef} from "./MessageList.types.ts";
 
 const MessageList = observer(forwardRef(({
   messages,

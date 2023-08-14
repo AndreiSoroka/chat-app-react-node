@@ -1,9 +1,5 @@
 import { Alert } from 'antd';
-
-type ErrorsProps = {
-  errorCode?: number;
-  errorMessage?: string;
-};
+import type {ErrorsProps} from "./MessageError.types.ts";
 
 const MessageError  = ({ errorCode, errorMessage }: ErrorsProps) => {
   if (!errorCode || !errorMessage) return null;

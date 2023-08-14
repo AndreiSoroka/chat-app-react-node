@@ -1,35 +1,8 @@
-import {useEffect, useMemo, useRef, useState} from 'react';
-import type { FormInstance } from 'antd';
-import {Button, Form, Input, InputRef} from 'antd';
+import {useEffect, useMemo, useRef} from 'react';
+import {Form, Input, InputRef} from 'antd';
+import {MessageFormProps} from "./MessageForm.types.ts";
+import SubmitButton from "./SubmitButton.tsx";
 
-type MessageFormProps = {
-  onMessageSend: (displayName: string, textContent: string) => Promise<void>;
-  formStatus: 'idle' | 'pending' | 'success' | 'error';
-}
-type MessageFormButtonProps = { form: FormInstance; isPending: boolean }
-
-const SubmitButton = ({ form, isPending }: MessageFormButtonProps) => {
-  const [submittable, setSubmittable] = useState(false);
-
-  const values = Form.useWatch([], form);
-
-  useEffect(() => {
-    form.validateFields({ validateOnly: true }).then(
-      () => {
-        setSubmittable(true);
-      },
-      () => {
-        setSubmittable(false);
-      },
-    );
-  }, [form, values]);
-
-  return (
-    <Button type="primary" htmlType="submit" disabled={!submittable || isPending}>
-      Send
-    </Button>
-  );
-};
 
 const MessageForm = ({ onMessageSend, formStatus }: MessageFormProps) => {
   const [form] = Form.useForm();
@@ -50,7 +23,7 @@ const MessageForm = ({ onMessageSend, formStatus }: MessageFormProps) => {
   };
 
   return (
-    <Form form={form} layout="inline" onFinish={handleSubmit}>
+    <Form autoComplete="off" form={form} layout="inline" onFinish={handleSubmit}>
       <Form.Item name="displayName" rules={[{ required: true, message: 'Please input your Display Name!' }]}>
         <Input placeholder="Display Name" readOnly={isPending} />
       </Form.Item>
