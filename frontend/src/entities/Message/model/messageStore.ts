@@ -1,10 +1,21 @@
 import {makeAutoObservable, runInAction} from "mobx";
 import type {FetchError, Message, ResponseAddMessage, ResponseMessageList} from "./messageStore.types.ts";
 
+// Temporary fix for reconnecting WebSocket after hot-reload
+// need to read MobX docs to find a better solution
+declare global {
+  interface Window {
+    __WEB_SOCKET__?: null | WebSocket;
+  }
+}
+
+const WEBSOCKET_LIVE_STATUS: (number|undefined)[] = [WebSocket.OPEN, WebSocket.CONNECTING];
+
+
 class MessageStore {
   messages: Message[] = [];
   lastTimestamp?: number;
-  ws: WebSocket | null = null;
+  ws: WebSocket | null = window.__WEB_SOCKET__ || null;
   fetchError?: FetchError;
   status: "idle" | "pending" | "success" | "error" = "idle";
 
@@ -13,12 +24,20 @@ class MessageStore {
   }
 
   initWebSocket() {
-    if (this.ws?.readyState === WebSocket.OPEN) {
+    if (window.__WEB_SOCKET__ && WEBSOCKET_LIVE_STATUS.includes(window.__WEB_SOCKET__?.readyState)) {
+      this.ws = window.__WEB_SOCKET__;
       return;
     }
+
+    if (WEBSOCKET_LIVE_STATUS.includes(this.ws?.readyState)) {
+      return;
+    }
+
     this.ws = new WebSocket(`ws://${window.location.host}/api/socket`);
     this.ws.onmessage = this.handleWebSocketMessage;
     this.ws.onclose = this.handleWebSocketClose;
+    window.__WEB_SOCKET__?.close();
+    window.__WEB_SOCKET__ = this.ws;
   }
 
   handleWebSocketMessage = (event: MessageEvent) => {

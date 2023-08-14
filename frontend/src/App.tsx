@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {observer} from "mobx-react-lite";
-import messageStore from "./entities/Message/model/messageStore.ts";
+import {MessageForm, MessageError, MessageList, messageStore, ScrollDownButton} from "./entities/Message";
+import {type MessageListRef} from "./entities/Message/ui/MessageList/MessageList.tsx";
+import {Card, Space} from "antd";
 
-const App: React.FC = observer(() => {
-  const [displayName, setDisplayName] = useState("");
-  const [textContent, setTextContent] = useState("");
+const App = observer(() => {
+  const [isAutoScroll, setIsAutoScroll] = useState(true);
+  const listRef = useRef<MessageListRef>(null);
 
   useEffect(() => {
     messageStore.fetchMessages()
@@ -17,45 +19,35 @@ const App: React.FC = observer(() => {
     };
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSendMessage = async (displayName: string, textContent: string) => {
     const response = await messageStore.sendMessage(displayName, textContent);
     if (response?.success) {
-      setTextContent("");
+      listRef.current?.scrollToEnd();
     }
   };
 
+  const handleScrollToEnd = () => {
+    listRef.current?.scrollToEnd();
+  }
+
+  function handleAutoScroll(value: boolean) {
+    setIsAutoScroll(value)
+  }
+
   return (
-    <div>
-      <div>
-        {messageStore.messages.map((message, index) => (
-          <div key={index}>
-            <strong>{message.displayName}</strong>: {message.textContent}
-            <small>{new Date(message.timestamp).toLocaleString()}</small>
-          </div>
-        ))}
-      </div>
-      <form onSubmit={handleSubmit}>
-        {messageStore.fetchError && (
-          <div style={{color: 'red'}}>
-            Error {messageStore.fetchError.errorCode}: {messageStore.fetchError.errorMessage}
-          </div>
-        )}
-        <input
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-          placeholder="Display Name"
-          readOnly={messageStore.status === "pending"}
-        />
-        <input
-          value={textContent}
-          onChange={(e) => setTextContent(e.target.value)}
-          placeholder="Message"
-          readOnly={messageStore.status === "pending"}
-        />
-        <button type="submit" disabled={messageStore.status === "pending"}>Send</button>
-      </form>
-    </div>
+    <Card
+      title="Chat"
+      extra={isAutoScroll ? null : (<ScrollDownButton onClick={handleScrollToEnd}/>)}
+      cover={<MessageList messages={messageStore.messages} onAutoScroll={handleAutoScroll} ref={listRef}/>}
+      style={{ maxWidth: 550, margin: "2rem auto" }}
+    >
+      <Space direction="vertical">
+      <MessageError
+        errorCode={messageStore.fetchError?.errorCode}
+        errorMessage={messageStore.fetchError?.errorMessage}/>
+      <MessageForm onMessageSend={handleSendMessage} formStatus={messageStore.status}/>
+      </Space>
+    </Card>
   );
 });
 

@@ -56,7 +56,7 @@ I've added a frontend MVP, which is a simple form with a single input and a butt
 
 The weirdest thing is that it worked on the first try. Spent 20 minutes, haha.
 
-## 6. Add MobX Store
+## 6. Add MobX Store (e1fd475b)
 
 Last time I tried Redux (https://github.com/AndreiSoroka/cart-component/tree/master),
 and I can say that I didn't like
@@ -64,6 +64,7 @@ Redux. That's why I decided to try MobX, and it turned out to
 be very, very interesting.
 
 I created a store where the logic for working with messages is encapsulated:
+
 - Storing messages
 - Sending messages
 - Retrieving messages
@@ -73,3 +74,15 @@ For now, I've simply drafted the code without giving it much thought. I'll likel
 time.
 
 ![img_4.png](img_4.png)
+
+## Add Ant Design
+
+Hi there!
+Today, I integrated Ant Design into the project. I've previously used it with Vue.js (and it wasn't a great fit for
+Vue.js). However, this is my first time using it with React. I must say, this component library works well with
+React! :)
+
+Of course, I spent some time on AntD + MobX and encountered a few pitfalls.
+
+![img_6.png](img_6.png)
+![img_5.png](img_5.png)
