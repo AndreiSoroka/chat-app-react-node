@@ -1,9 +1,9 @@
-import {Chat} from "@/widgets/Chat";
+import { Chat } from "@/widgets/Chat";
 
 const App = () => {
   return (
-    <div style={{maxWidth: 550, margin: "2rem auto"}}>
-      <Chat/>
+    <div style={{ maxWidth: 550, margin: "2rem auto" }}>
+      <Chat />
     </div>
   );
 };

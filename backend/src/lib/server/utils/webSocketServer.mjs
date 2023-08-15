@@ -1,4 +1,4 @@
-import { WebSocketServer } from 'ws';
+import { WebSocketServer } from "ws";
 
 /**
  * @typedef {import('ws').WebSocketServer} WebSocketServerInstance
@@ -14,10 +14,10 @@ let wss;
 export function initWebSocket(server) {
   wss = new WebSocketServer({ noServer: true });
 
-  server.on('upgrade', (request, socket, head) => {
-    if (request.url === '/api/socket') {
+  server.on("upgrade", (request, socket, head) => {
+    if (request.url === "/api/socket") {
       wss.handleUpgrade(request, socket, head, (ws) => {
-        wss.emit('connection', ws, request);
+        wss.emit("connection", ws, request);
       });
     } else {
       socket.destroy();
@@ -33,7 +33,7 @@ export function initWebSocket(server) {
  */
 export function getWebSocketServer() {
   if (!wss) {
-    throw new Error('WebSocket server not created');
+    throw new Error("WebSocket server not created");
   }
   return wss;
 }

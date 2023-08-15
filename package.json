@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "lint": "npm run lint --workspaces",
+    "lint:fix": "npm run lint:fix --workspaces",
+    "prettier": "prettier . --check",
+    "prettier:fix": "prettier . --write",
+    "format": "run-p prettier:fix lint:fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -10,5 +15,10 @@
   "workspaces": [
     "frontend",
     "backend"
-  ]
+  ],
+  "devDependencies": {
+    "eslint-config-prettier": "^9.0.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^3.0.1"
+  }
 }

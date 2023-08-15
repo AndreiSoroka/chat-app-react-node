@@ -1,5 +1,10 @@
-import {makeAutoObservable, runInAction} from "mobx";
-import type {FetchError, Message, ResponseAddMessage, ResponseMessageList} from "./messageStore.types.ts";
+import { makeAutoObservable, runInAction } from "mobx";
+import type {
+  FetchError,
+  Message,
+  ResponseAddMessage,
+  ResponseMessageList,
+} from "./messageStore.types.ts";
 
 // Temporary fix for reconnecting WebSocket after hot-reload
 // need to read MobX docs to find a better solution
@@ -9,8 +14,10 @@ declare global {
   }
 }
 
-const WEBSOCKET_LIVE_STATUS: (number|undefined)[] = [WebSocket.OPEN, WebSocket.CONNECTING];
-
+const WEBSOCKET_LIVE_STATUS: (number | undefined)[] = [
+  WebSocket.OPEN,
+  WebSocket.CONNECTING,
+];
 
 class MessageStore {
   messages: Message[] = [];
@@ -24,7 +31,10 @@ class MessageStore {
   }
 
   initWebSocket() {
-    if (window.__WEB_SOCKET__ && WEBSOCKET_LIVE_STATUS.includes(window.__WEB_SOCKET__?.readyState)) {
+    if (
+      window.__WEB_SOCKET__ &&
+      WEBSOCKET_LIVE_STATUS.includes(window.__WEB_SOCKET__?.readyState)
+    ) {
       this.ws = window.__WEB_SOCKET__;
       return;
     }
@@ -63,7 +73,7 @@ class MessageStore {
     runInAction(() => {
       this.setStatus("pending");
     });
-    const query = this.lastTimestamp ? `?timestamp=${this.lastTimestamp}` : '';
+    const query = this.lastTimestamp ? `?timestamp=${this.lastTimestamp}` : "";
     try {
       const response = await fetch(`/api/message/list${query}`);
       if (!response.ok) {
@@ -89,10 +99,10 @@ class MessageStore {
       console.error("Failed to fetch messages:", error);
       const customError: FetchError = {
         errorCode: -1,
-        errorMessage: 'Network error or unexpected error occurred.',
+        errorMessage: "Network error or unexpected error occurred.",
         status: 500,
-        success: false
-      }
+        success: false,
+      };
       runInAction(() => {
         this.setFetchError(customError);
       });
@@ -100,7 +110,10 @@ class MessageStore {
     }
   }
 
-  async sendMessage(displayName: string, textContent: string): Promise<FetchError | ResponseAddMessage | undefined> {
+  async sendMessage(
+    displayName: string,
+    textContent: string,
+  ): Promise<FetchError | ResponseAddMessage | undefined> {
     if (this.status === "pending") {
       return;
     }
@@ -135,10 +148,10 @@ class MessageStore {
       console.error("Failed to fetch messages:", error);
       const customError: FetchError = {
         errorCode: -1,
-        errorMessage: 'Network error or unexpected error occurred.',
+        errorMessage: "Network error or unexpected error occurred.",
         status: 500,
-        success: false
-      }
+        success: false,
+      };
       runInAction(() => {
         this.setFetchError(customError);
       });
@@ -164,7 +177,7 @@ class MessageStore {
 
   setFetchError(error: FetchError) {
     this.fetchError = error;
-    this.setStatus("error")
+    this.setStatus("error");
   }
 
   clearFetchError() {

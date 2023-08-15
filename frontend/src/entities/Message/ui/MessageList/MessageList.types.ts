@@ -1,6 +1,6 @@
 export type MessageListRef = {
   scrollToEnd: () => void;
-}
+};
 
 export type MessageListProps = {
   messages: {
@@ -9,4 +9,4 @@ export type MessageListProps = {
     timestamp: number;
   }[];
   onAutoScroll?: (value: boolean) => void;
-}
+};

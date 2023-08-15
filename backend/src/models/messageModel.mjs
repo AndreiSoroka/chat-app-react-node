@@ -58,7 +58,10 @@ export function hasUserSpammed(displayName) {
     if (messages[i].displayName === displayName) {
       countMessages += 1;
     }
-    if (messages[i].timestamp < tenSecondsAgo || countMessages >= LIMIT_SPAM_RATE) {
+    if (
+      messages[i].timestamp < tenSecondsAgo ||
+      countMessages >= LIMIT_SPAM_RATE
+    ) {
       break;
     }
   }

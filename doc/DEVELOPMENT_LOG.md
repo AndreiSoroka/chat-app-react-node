@@ -87,7 +87,7 @@ Of course, I spent some time on AntD + MobX and encountered a few pitfalls.
 ![img_6.png](img_6.png)
 ![img_5.png](img_5.png)
 
-## Migrate to FSD
+## Migrate to FSD (efdbc521)
 
 I've decided to use the [FSD](https://feature-sliced.design/) methodology.
 
@@ -109,3 +109,13 @@ I still have 4 days left (out of 7), but this time I don't have much free time t
 it.
 
 I will make a decision tomorrow
+
+## Add Prettier
+
+My motto is:
+> If it's not automated, it's subjective.
+
+It doesn't matter to me in what code style to write, the main thing is that in one style
+
+To ensure the code follows a consistent style, I've added
+Prettier.

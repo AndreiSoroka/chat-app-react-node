@@ -1,1 +1,1 @@
-export {default as SendMessage} from './ui/SendMessage/SendMessage.tsx';
+export { default as SendMessage } from "./ui/SendMessage/SendMessage.tsx";

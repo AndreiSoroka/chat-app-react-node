@@ -1,4 +1,4 @@
-import getEnvironments from '../../env/getEnvironments.mjs';
+import getEnvironments from "../../env/getEnvironments.mjs";
 
 const { PORT } = getEnvironments();
 
@@ -7,7 +7,7 @@ const { PORT } = getEnvironments();
  */
 export default function checkPort() {
   if (!PORT) {
-    console.error(new Error('env PORT is required'));
+    console.error(new Error("env PORT is required"));
     process.exit(1);
   }
 

@@ -4,9 +4,7 @@
     "es2021": true,
     "node": true
   },
-  "extends": [
-    "airbnb-base"
-  ],
+  "extends": ["airbnb-base", "prettier"],
   "parserOptions": {
     "ecmaVersion": 12,
     "sourceType": "module"
@@ -14,20 +12,14 @@
   "settings": {
     "import/resolver": {
       "node": {
-        "extensions": [
-          ".js",
-          ".mjs"
-        ]
+        "extensions": [".js", ".mjs"]
       }
     }
   },
   "rules": {
     "no-console": "off",
     "no-underscore-dangle": "off",
-    "import/extensions": [
-      "error",
-      "always"
-    ],
+    "import/extensions": ["error", "always"],
     "import/no-relative-packages": "off",
     "import/prefer-default-export": "off"
   }

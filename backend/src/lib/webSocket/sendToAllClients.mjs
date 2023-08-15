@@ -1,4 +1,4 @@
-import { getWebSocketServer } from '../server/index.mjs';
+import { getWebSocketServer } from "../server/index.mjs";
 
 /**
  * Send a some data to all connected clients

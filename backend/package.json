@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node src/index.mjs",
-    "lint": "eslint . --ext .mjs",
-    "lint:fix": "eslint . --ext .mjs --fix"
+    "lint": "eslint . --ext .mjs --max-warnings 0",
+    "lint:fix": "npm run lint -- --fix"
   },
   "dependencies": {
     "express": "^4.18.2",

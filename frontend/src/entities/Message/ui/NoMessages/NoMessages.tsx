@@ -1,4 +1,4 @@
-import {Result} from "antd";
+import { Result } from "antd";
 
 const NoMessages = () => {
   return (
@@ -8,6 +8,6 @@ const NoMessages = () => {
       subTitle="Just type your name and start chatting!"
     />
   );
-}
+};
 
 export default NoMessages;

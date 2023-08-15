@@ -2,17 +2,17 @@ export type Message = {
   displayName: string;
   textContent: string;
   timestamp: number;
-}
+};
 
 export type ResponseMessageList = {
   success: boolean;
   count: number;
-  data: Message[]
-}
+  data: Message[];
+};
 export type ResponseAddMessage = {
   success: true;
-  data: Message[]
-}
+  data: Message[];
+};
 
 export type FetchError = {
   errorCode: number;

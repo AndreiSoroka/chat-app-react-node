@@ -1,6 +1,6 @@
-import {MessageFormButtonProps} from "@/entities/Message/ui/MessageForm/MessageForm.types.ts";
-import {useEffect, useState} from "react";
-import {Button, Form} from "antd";
+import { MessageFormButtonProps } from "@/entities/Message/ui/MessageForm/MessageForm.types.ts";
+import { useEffect, useState } from "react";
+import { Button, Form } from "antd";
 
 const SubmitButton = ({ form, isPending }: MessageFormButtonProps) => {
   const [submittable, setSubmittable] = useState(false);
@@ -19,7 +19,11 @@ const SubmitButton = ({ form, isPending }: MessageFormButtonProps) => {
   }, [form, values]);
 
   return (
-    <Button type="primary" htmlType="submit" disabled={!submittable || isPending}>
+    <Button
+      type="primary"
+      htmlType="submit"
+      disabled={!submittable || isPending}
+    >
       Send
     </Button>
   );

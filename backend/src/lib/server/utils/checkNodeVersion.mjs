@@ -1,5 +1,5 @@
-import semver from 'semver';
-import packageJson from '../../../../package.json' assert {type: 'json'};
+import semver from "semver";
+import packageJson from "../../../../package.json" assert { type: "json" };
 
 /**
  * Check if the current node version satisfies the required version in package.json

@@ -1,11 +1,16 @@
-import * as messageModel from '../models/messageModel.mjs';
-import { formatCreatedMessage, formatMessagesList } from '../views/messageView.mjs';
-import errors from '../lib/errors/errors.json' assert {type: 'json'};
-import sendToAllClients from '../lib/webSocket/sendToAllClients.mjs';
+import * as messageModel from "../models/messageModel.mjs";
+import {
+  formatCreatedMessage,
+  formatMessagesList,
+} from "../views/messageView.mjs";
+import errors from "../lib/errors/errors.json" assert { type: "json" };
+import sendToAllClients from "../lib/webSocket/sendToAllClients.mjs";
 
 export function listMessages(req, res, next) {
   try {
-    const timestamp = req.query.timestamp ? parseInt(req.query.timestamp, 10) : null;
+    const timestamp = req.query.timestamp
+      ? parseInt(req.query.timestamp, 10)
+      : null;
 
     const messages = timestamp
       ? messageModel.getMessagesFromTimestamp(timestamp)
@@ -28,10 +33,10 @@ export function addMessage(req, res, next) {
     }
 
     if (
-      typeof displayName !== 'string'
-      || typeof textContent !== 'string'
-      || displayName.length > 20
-      || textContent.length > 300
+      typeof displayName !== "string" ||
+      typeof textContent !== "string" ||
+      displayName.length > 20 ||
+      textContent.length > 300
     ) {
       next(errors.messages.INVALID_DATA);
       return;

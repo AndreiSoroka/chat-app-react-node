@@ -5,10 +5,10 @@ import {
   checkNodeVersion,
   checkPort,
   normalizePort,
-} from '../lib/server/index.mjs';
-import getEnvironments from '../lib/env/getEnvironments.mjs';
+} from "../lib/server/index.mjs";
+import getEnvironments from "../lib/env/getEnvironments.mjs";
 
-const START_LABEL = 'stared';
+const START_LABEL = "stared";
 console.time(START_LABEL);
 
 const { PORT, HOST } = getEnvironments();
