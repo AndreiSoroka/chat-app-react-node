@@ -7,6 +7,9 @@
     "lint": "eslint . --ext .mjs --max-warnings 0",
     "lint:fix": "npm run lint -- --fix"
   },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": "eslint --fix --concurrent false"
+  },
   "dependencies": {
     "express": "^4.18.2",
     "morgan": "^1.10.0",

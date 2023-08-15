@@ -113,9 +113,14 @@ I will make a decision tomorrow
 ## Add Prettier
 
 My motto is:
+
 > If it's not automated, it's subjective.
 
 It doesn't matter to me in what code style to write, the main thing is that in one style
 
 To ensure the code follows a consistent style, I've added
 Prettier.
+
+## Add Husky
+
+A bit more automation. I've added Husky to run Prettier and Eslint before each commit.

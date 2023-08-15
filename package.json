@@ -8,7 +8,8 @@
     "prettier": "prettier . --check",
     "prettier:fix": "prettier . --write",
     "format": "run-p prettier:fix lint:fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
@@ -16,8 +17,13 @@
     "frontend",
     "backend"
   ],
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown --concurrent false"
+  },
   "devDependencies": {
     "eslint-config-prettier": "^9.0.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^3.0.1"
   }

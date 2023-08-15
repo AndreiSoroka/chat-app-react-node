@@ -10,6 +10,9 @@
     "lint:fix": "npm run lint -- --fix",
     "preview": "vite preview"
   },
+  "lint-staged": {
+    "**/*.{ts,tsx}": "eslint --fix --concurrent false"
+  },
   "dependencies": {
     "@ant-design/icons": "^5.2.5",
     "antd": "^5.8.3",
