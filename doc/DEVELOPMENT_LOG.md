@@ -125,6 +125,28 @@ Prettier.
 
 A bit more automation. I've added Husky to run Prettier and Eslint before each commit.
 
-## Fix message loss bug between fetch and socket connection
+## Fix message loss bug between fetch and socket connection (30f5a94d)
 
 Just fix bug
+
+## Add Docker
+
+Today is deadline when I can dedicate time to the project.
+
+I've decided not to focus on the code anymore, as it can always be improved endlessly. Instead, I've focused on streamlining the setup process. That's why I've consolidated everything using Docker Compose.
+
+You can take a look at slightly more organized code in my [previous test-task](https://github.com/AndreiSoroka/cart-component/tree/master).
+
+I approached each project differently. For instance, here:
+
+- I tried writing this log, step by step, detailing how I approached the project.
+- I decided not to overthink the architecture and just start coding (which turned out to be fun and quite fast).
+- I chose to skip writing tests (usually, I develop tests firstly and then the code).
+- I decided not to use Storybook (I create components in Storybook and then integrate them into the app).
+- I tried MobX, and I liked it more than Redux.
+
+And once again, I'll remind you that I'm not a React developer. The code lacks reviews (yes, I didn't even codereview it myself). And this was a test task :) And I enjoyed it.
+
+Have a nice day and kind regards
+
+![result.gif](result.gif)
