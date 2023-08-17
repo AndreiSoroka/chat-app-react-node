@@ -47,7 +47,9 @@ const MessageList = observer(
           <VirtualList
             data={cloneMessages}
             height={400}
-            itemKey="timestamp"
+            itemKey={({ timestamp, displayName }) =>
+              `${timestamp}-${displayName}`
+            }
             onScroll={onScroll}
             ref={listRef}
           >

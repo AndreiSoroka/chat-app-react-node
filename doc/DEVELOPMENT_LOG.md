@@ -110,7 +110,7 @@ it.
 
 I will make a decision tomorrow
 
-## Add Prettier
+## Add Prettier (1d198120)
 
 My motto is:
 
@@ -121,6 +121,10 @@ It doesn't matter to me in what code style to write, the main thing is that in o
 To ensure the code follows a consistent style, I've added
 Prettier.
 
-## Add Husky
+## Add Husky (b08af589)
 
 A bit more automation. I've added Husky to run Prettier and Eslint before each commit.
+
+## Fix message loss bug between fetch and socket connection
+
+Just fix bug

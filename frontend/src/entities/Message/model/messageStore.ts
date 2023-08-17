@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable } from "mobx";
 import type {
   FetchError,
   Message,
@@ -21,6 +21,7 @@ const WEBSOCKET_LIVE_STATUS: (number | undefined)[] = [
 
 class MessageStore {
   messages: Message[] = [];
+  messagesKeys = new Set<string>();
   lastTimestamp?: number;
   ws: WebSocket | null = window.__WEB_SOCKET__ || null;
   fetchError?: FetchError;
@@ -28,6 +29,8 @@ class MessageStore {
 
   constructor() {
     makeAutoObservable(this);
+
+    this.initWebSocket();
   }
 
   initWebSocket() {
@@ -44,56 +47,55 @@ class MessageStore {
     }
 
     this.ws = new WebSocket(`ws://${window.location.host}/api/socket`);
-    this.ws.onmessage = this.handleWebSocketMessage;
-    this.ws.onclose = this.handleWebSocketClose;
+    this.ws.onopen = this.handleWebSocketOpen.bind(this);
+    this.ws.onmessage = this.handleWebSocketMessage.bind(this);
+    this.ws.onclose = this.handleWebSocketClose.bind(this);
     window.__WEB_SOCKET__?.close();
     window.__WEB_SOCKET__ = this.ws;
   }
 
-  handleWebSocketMessage = (event: MessageEvent) => {
-    const message: Message = JSON.parse(event.data);
-    runInAction(() => {
-      this.addMessage(message);
-    });
-  };
+  handleWebSocketOpen() {
+    // todo it is better to exchange messages using a socket, it will be easier to maintain. My mistake
+    this.fetchMessages().then();
+  }
 
-  handleWebSocketClose = () => {
-    // Try to reconnect in 1 second
+  handleWebSocketMessage(event: MessageEvent) {
+    const message: Message = JSON.parse(event.data);
+    this.addMessage(message);
+  }
+
+  handleWebSocketClose() {
+    // Try to reconnect in 3 second
     setTimeout(() => {
-      this.fetchMessages().then(() => {
-        this.initWebSocket();
-      });
-    }, 1000);
-  };
+      this.initWebSocket();
+    }, 3000);
+  }
 
   async fetchMessages(): Promise<FetchError | ResponseMessageList | undefined> {
     if (this.status === "pending") {
       return;
     }
-    runInAction(() => {
-      this.setStatus("pending");
-    });
+    this.setStatus("pending");
+
     const query = this.lastTimestamp ? `?timestamp=${this.lastTimestamp}` : "";
     try {
       const response = await fetch(`/api/message/list${query}`);
       if (!response.ok) {
         const error: FetchError = await response.json();
-        runInAction(() => {
-          this.setFetchError(error);
-        });
+        this.setFetchError(error);
         return;
       }
+
       const data: ResponseMessageList = await response.json();
-      runInAction(() => {
-        if (this.lastTimestamp) {
-          this.messages.push(...data.data);
-        } else {
-          this.messages = data.data;
-        }
-        this.lastTimestamp = this.messages[this.messages.length - 1]?.timestamp;
-        this.clearFetchError();
-        this.setStatus("success");
-      });
+      if (this.lastTimestamp) {
+        data.data.forEach(this.addMessage);
+      } else {
+        this.messages = data.data;
+      }
+
+      this.lastTimestamp = this.messages[this.messages.length - 1]?.timestamp;
+      this.clearFetchError();
+      this.setStatus("success");
       return data;
     } catch (error) {
       console.error("Failed to fetch messages:", error);
@@ -103,9 +105,7 @@ class MessageStore {
         status: 500,
         success: false,
       };
-      runInAction(() => {
-        this.setFetchError(customError);
-      });
+      this.setFetchError(customError);
       return customError;
     }
   }
@@ -117,9 +117,7 @@ class MessageStore {
     if (this.status === "pending") {
       return;
     }
-    runInAction(() => {
-      this.setStatus("pending");
-    });
+    this.setStatus("pending");
 
     try {
       const response = await fetch("/api/message", {
@@ -134,15 +132,11 @@ class MessageStore {
       });
       if (!response.ok) {
         const error: FetchError = await response.json();
-        runInAction(() => {
-          this.setFetchError(error);
-        });
+        this.setFetchError(error);
         return;
       }
-      runInAction(() => {
-        this.clearFetchError();
-        this.setStatus("success");
-      });
+      this.clearFetchError();
+      this.setStatus("success");
       return await response.json();
     } catch (error) {
       console.error("Failed to fetch messages:", error);
@@ -152,21 +146,28 @@ class MessageStore {
         status: 500,
         success: false,
       };
-      runInAction(() => {
-        this.setFetchError(customError);
-      });
+      this.setFetchError(customError);
       return customError;
     }
   }
 
   addMessage(message: Message) {
+    // Check duplicates by timestamp and nickname
+    // P.s. From task requirements: I have only display name, text content and timestamp ¯\_(ツ)_/¯
+    const messageId = `${message.timestamp}-${message.displayName}`;
+    if (this.messagesKeys.has(messageId)) {
+      return;
+    }
+    this.messagesKeys.add(messageId);
+
+    // If message is newer than the last message in the list, add it to the end
     if (!this.lastTimestamp || message.timestamp > this.lastTimestamp) {
       this.messages.push(message);
       this.lastTimestamp = message.timestamp;
       return;
     }
 
-    // If message is older than the last message in the list, find the correct
+    // If message is older than the last message in the list, find the correct place and add it
     for (let i = this.messages.length - 1; i >= 0; i--) {
       if (this.messages[i].timestamp <= message.timestamp) {
         this.messages.splice(i + 1, 0, message);

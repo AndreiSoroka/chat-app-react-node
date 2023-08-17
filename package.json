@@ -18,7 +18,7 @@
     "backend"
   ],
   "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown --concurrent false"
+    "**/*": "prettier --write --ignore-unknown"
   },
   "devDependencies": {
     "eslint-config-prettier": "^9.0.0",
